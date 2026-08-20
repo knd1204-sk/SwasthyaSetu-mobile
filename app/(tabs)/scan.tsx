@@ -45,7 +45,7 @@ export default function ScanScreen() {
     try {
       const formData = new FormData();
       const fileObj: any = {
-        uri: Platform.OS === 'android' ? uri : uri.replace('file://', ''),
+        uri: uri,
         type: mimeType || 'image/jpeg',
         name: fileName || `prescription_${Date.now()}.jpg`,
       };
@@ -78,7 +78,6 @@ export default function ScanScreen() {
         mediaTypes: ['images'],
         quality: 0.8,
         allowsEditing: false,
-        presentationStyle: 0,
       });
       if (result.canceled) {
         setState('idle');
@@ -441,7 +440,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xs,
     fontWeight: '600',
     color: colors.primary,
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
   },
   medicineInstr: {
     fontSize: fontSize.sm,

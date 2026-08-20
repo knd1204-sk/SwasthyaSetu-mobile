@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, DimensionValue } from 'react-native';
 import { colors, borderRadius, fontSize, spacing, typography, shadows } from '../constants/theme';
-import Button from './Button';
+import { Button } from './Button';
 
 interface CardProps {
   children: React.ReactNode;
@@ -86,7 +86,7 @@ export const Badge: React.FC<BadgeProps> = ({ label, variant = 'default', size =
   );
 };
 
-export const Skeleton: React.FC<{ width?: number | string; height?: number; style?: ViewStyle }> = ({
+export const Skeleton: React.FC<{ width?: DimensionValue; height?: number; style?: ViewStyle }> = ({
   width = '100%',
   height = 16,
   style,

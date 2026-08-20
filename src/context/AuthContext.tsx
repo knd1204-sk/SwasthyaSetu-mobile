@@ -193,7 +193,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const meRes = await authApi.me();
       const userData = meRes.data.data;
 
-      if (!userData?.user || (userData.user.role !== 'patient' && userData.role !== 'patient')) {
+      if (!userData?.user || userData.user.role !== 'patient') {
         await clearToken();
         setState((s) => ({
           ...s,

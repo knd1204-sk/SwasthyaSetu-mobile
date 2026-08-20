@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Pressable, Platform, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
 import { useAuth } from '../../src/context/AuthContext';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../src/constants/theme';
 import { Card, Badge, Skeleton, EmptyState, ErrorState } from '../../src/components/Card';
@@ -263,26 +264,40 @@ const LabOrderCard: React.FC<{ item: any; t: (k: any) => string; index: number }
   </Card>
 );
 
-const LabReportCard: React.FC<{ item: any; t: (k: any) => string; index: number }> = ({ item, t, index }) => (
-  <Card>
-    <View style={styles.cardTopRow}>
-      <View style={{ flex: 1 }}>
-        <Text style={styles.cardDate}>{formatRelativeTime(item.uploaded_at || item.created_at)}</Text>
+const LabReportCard: React.FC<{ item: any; t: (k: any) => string; index: number }> = ({ item, t, index }) => {
+  const handleOpenReport = async () => {
+    if (!item.report_file_url) return;
+    try {
+      await WebBrowser.openBrowserAsync(item.report_file_url);
+    } catch {
+      Linking.openURL(item.report_file_url);
+    }
+  };
+
+  return (
+    <Card>
+      <View style={styles.cardTopRow}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.cardDate}>{formatRelativeTime(item.uploaded_at || item.created_at)}</Text>
+        </View>
+        <Badge label={t('reportReady')} variant="success" />
       </View>
-      <Badge label={t('reportReady')} variant="success" />
-    </View>
-    <Text style={styles.cardHeading}>Lab Report</Text>
-    {item.report_summary && (
-      <Text style={styles.cardBodyText}>{item.report_summary}</Text>
-    )}
-    {item.report_file_url && (
-      <Pressable style={styles.viewBtn}>
-        <Ionicons name="open-outline" size={16} color={colors.primary} />
-        <Text style={styles.viewBtnText}>View Full Report</Text>
-      </Pressable>
-    )}
-  </Card>
-);
+      <Text style={styles.cardHeading}>Lab Report</Text>
+      {item.report_summary && (
+        <Text style={styles.cardBodyText}>{item.report_summary}</Text>
+      )}
+      {item.report_file_url && (
+        <Pressable
+          style={({ pressed }) => [styles.viewBtn, { opacity: pressed ? 0.8 : 1 }]}
+          onPress={handleOpenReport}
+        >
+          <Ionicons name="open-outline" size={16} color={colors.primary} />
+          <Text style={styles.viewBtnText}>View Full Report</Text>
+        </Pressable>
+      )}
+    </Card>
+  );
+};
 
 const DetailRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <View style={{ marginTop: spacing.md }}>
@@ -430,7 +445,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     fontWeight: '600',
     color: colors.text,
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
   },
   detailLabel: {
     fontSize: 11,

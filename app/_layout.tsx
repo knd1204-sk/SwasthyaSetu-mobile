@@ -27,8 +27,8 @@ export default function RootLayout() {
                 fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
               },
               headerBackTitleStyle: {
-                color: colors.primary,
-                fontWeight: '600',
+                fontSize: fontSize.md,
+                fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
               },
               headerShadowVisible: false,
               headerTransparent: false,

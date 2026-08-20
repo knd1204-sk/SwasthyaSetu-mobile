@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import QRCode from 'react-native-qrcode-svg';
 import { useAuth } from '../../src/context/AuthContext';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../src/constants/theme';
-import { Card, Badge, Skeleton } from '../../src/components/Card';
+import { Card, Skeleton } from '../../src/components/Card';
 import { getGreeting, capitalize } from '../../src/utils/format';
 
 export default function HomeScreen() {
-  const { profile, t, refreshProfile, isVerifying } = useAuth();
+  const { profile, t, refreshProfile } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(!profile);
 
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.primary,
     marginTop: 3,
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
   },
   idBlood: {
     fontSize: fontSize.md,

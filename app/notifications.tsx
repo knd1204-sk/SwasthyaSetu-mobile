@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../src/context/AuthContext';
@@ -63,7 +63,7 @@ export default function NotificationsScreen() {
     try {
       await notificationsApi.markRead(item.id);
       setItems((prev) => prev.map((n) => n.id === item.id ? { ...n, is_read: true } : n));
-    } catch (e) {
+    } catch {
       // ignore
     }
   };

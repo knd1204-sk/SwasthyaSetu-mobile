@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors, spacing, fontSize, typography } from '../constants/theme';
 
@@ -55,7 +55,6 @@ export const Screen: React.FC<ScreenProps> = ({
 const ScreenScrollWrapper: React.FC<{ children: React.ReactNode; noPadding?: boolean }> = ({
   children,
 }) => {
-  const { ScrollView } = require('react-native');
   return (
     <ScrollView
       style={{ flex: 1 }}

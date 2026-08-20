@@ -1,4 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+  isCancel,
+  isAxiosError,
+} from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
 export const BASE_URL = 'https://swasthyasetu-3cif.onrender.com';
@@ -14,6 +21,7 @@ export interface ApiResponse<T = any> {
 }
 
 const createApiInstance = (): AxiosInstance => {
+  // eslint-disable-next-line import/no-named-as-default-member
   const instance = axios.create({
     baseURL: API_BASE,
     timeout: 60000,
@@ -33,6 +41,11 @@ const createApiInstance = (): AxiosInstance => {
       } catch (error) {
         console.warn('Failed to get auth token from secure store:', error);
       }
+
+      if (config.data instanceof FormData && config.headers) {
+        delete config.headers['Content-Type'];
+      }
+
       return config;
     },
     (error) => Promise.reject(error)
@@ -41,7 +54,7 @@ const createApiInstance = (): AxiosInstance => {
   instance.interceptors.response.use(
     (response: AxiosResponse) => response,
     (error: AxiosError) => {
-      if (axios.isCancel(error)) {
+      if (isCancel(error)) {
         return Promise.reject(error);
       }
       return Promise.reject(error);
@@ -80,17 +93,17 @@ export const languageStorage = {
 };
 
 export const handleApiError = (error: unknown): { message: string; status?: number; isColdStart?: boolean } => {
-  if (axios.isAxiosError(error)) {
+  if (isAxiosError(error)) {
     const status = error.response?.status;
     const responseData = error.response?.data as ApiResponse | undefined;
     const message = responseData?.message || error.message || 'Unknown error';
 
     if (status === 408 || (error.code === 'ECONNABORTED' && !error.response)) {
-      return { message: 'Request timed out. The server may be waking up from idle — please try again.', status, isColdStart: true };
+      return { message: 'Request timed out. The server may be waking up — please try again.', status, isColdStart: true };
     }
 
     if (!error.response && (error.code === 'ERR_NETWORK' || error.message.includes('Network Error'))) {
-      return { message: 'Connecting to server...', status, isColdStart: true };
+      return { message: 'Unable to connect to server. Please check your internet connection.', status, isColdStart: true };
     }
 
     return { message, status };

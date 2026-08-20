@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { colors, spacing } from '../../src/constants/theme';
 import { useAuth } from '../../src/context/AuthContext';
 
@@ -24,7 +24,7 @@ export default function TabLayout() {
         tabBarStyle: styles.tabBar,
         tabBarItemStyle: styles.tabItem,
         tabBarShowLabel: true,
-        contentStyle: { backgroundColor: colors.background },
+        sceneStyle: { backgroundColor: colors.background },
       }}
     >
       <Tabs.Screen
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '500',
     marginTop: 2,
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
   },
   iconWrapper: {
     alignItems: 'center',

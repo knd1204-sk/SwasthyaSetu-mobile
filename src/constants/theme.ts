@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 export const colors = {
   primary: '#0F6E5C',
   primaryLight: '#E7F3EF',
@@ -48,15 +50,15 @@ export const fontSize = {
 
 export const typography = {
   heading: {
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
     fontWeight: '700' as const,
   },
   body: {
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
     fontWeight: '400' as const,
   },
   mono: {
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
     fontWeight: '500' as const,
   },
 } as const;

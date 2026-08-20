@@ -5,7 +5,6 @@ import {
   Text,
   TextStyle,
   ViewStyle,
-  StyleSheet,
   ActivityIndicator,
 } from 'react-native';
 import { colors, borderRadius, fontSize, spacing, typography } from '../constants/theme';

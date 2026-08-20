@@ -170,12 +170,8 @@ export default function ChatScreen() {
                 <View style={styles.avatar}>
                   <Ionicons name="medical" size={18} color={colors.white} />
                 </View>
-                <View style={[styles.bubble, styles.bubbleAiBox]}>
-                  <View style={styles.typingDots}>
-                    <View style={[styles.dot, { animationDelay: '0ms' }]} />
-                    <View style={[styles.dot, { animationDelay: '150ms' }]} />
-                    <View style={[styles.dot, { animationDelay: '300ms' }]} />
-                  </View>
+                <View style={[styles.bubble, styles.bubbleAiBox, { paddingVertical: spacing.sm, paddingHorizontal: spacing.md }]}>
+                  <ActivityIndicator size="small" color={colors.primary} />
                 </View>
               </View>
             ) : null
@@ -346,7 +342,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.text,
     maxHeight: 120,
-    fontFamily: 'System',
+    fontFamily: Platform.OS === 'ios' ? 'System' : undefined,
     padding: 0,
     lineHeight: 22,
   },

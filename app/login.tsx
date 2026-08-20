@@ -127,7 +127,7 @@ export default function LoginScreen() {
               placeholder="you@example.com or +91..."
               autoCapitalize="none"
               autoCorrect={false}
-              keyboardType={Platform.OS === 'ios' ? 'email-address' : 'visible-password'}
+              keyboardType="email-address"
               returnKeyType="next"
               error={identifierError}
               leftIcon={
